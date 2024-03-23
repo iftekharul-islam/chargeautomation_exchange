@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  api:
+    container_name: cax_dev_api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    depends_on:
+      - database
+    ports: 
+      - 80:80
+    volumes:
+      - .:/var/www/html/
+
+  database:
+    container_name: cax_dev_database
+    image: mariadb:10.6.4-focal
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 12345678
+      MARIADB_DATABASE: caxdb
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: 12345678
+    command: '--default-authentication-plugin=mysql_native_password'
+    ports:
+      - 3306:3306
+    volumes:
+      - cax-dev-db-data:/var/lib/mysql
+
+volumes:
+  cax-dev-db-data:
+    name: cax-dev-db-data
+    driver: local

@@ -1,0 +1,1 @@
+<?php "ALTER TABLE partner_users ADD INDEX `pms_name_index` (`pms_name`);" ?>

@@ -1,0 +1,210 @@
+{
+  "integration_completed": true,
+  "enabled_for_partners": true,
+  "display_name": "Octorate",
+  "name": "octorate",
+  "description": "Octorate Property Management System",
+  "url": "https://octorate.com/en/",
+  "api_base_url": "https://api.octorate.com/connect/rest/v1",
+  "stage_api_base_url": "https://api.octorate.com/connect/rest/v1",
+  "api_docs": "https://api.octorate.com/connect/",
+  "endpoints_file": "core/config/pms/octorate/pms_endpoints",
+  "mapper_helper_file": "core/system/pms/octorate/mapper_helper",
+  "exception_file": "core/system/pms/octorate/ExceptionCodes",
+  "user_onboard": {
+    "type": "OAuth1",
+    "credentials": [],
+    "OAuth1": {
+      "stage": {
+        "url": "https://admin.octorate.com/octobook/identity/oauth.xhtml",
+        "call_back_url": "https://api.octorate.com/connect/rest/v1/identity/token"
+      },
+      "production": {
+        "url": "https://admin.octorate.com/octobook/identity/oauth.xhtml",
+        "call_back_url": "https://api.octorate.com/connect/rest/v1/identity/token"
+      },
+       "redirect_uri": "/main/pms_onboarding_authentication/oauth_redirected_authentication"
+    }
+  },
+  "requests": {
+    "status": true,
+    "booking": {
+      "status": true,
+      "available": {
+        "single": {
+          "read": true,
+          "write": null
+        },
+        "list": {
+          "read": true,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "booking.single.read": "get_booking",
+        "booking.single.write": null,
+        "booking.list.read": "get_booking_list",
+        "booking.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": "core/config/pms/octorate/pms_request_mapper/reservation",
+        "response_mapper_file": "core/config/pms/octorate/pms_response_mapper/reservation"
+      }
+    },
+    "property": {
+      "status": true,
+      "available": {
+        "single": {
+          "read": true,
+          "write": null
+        },
+        "list": {
+          "read": true,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "property.single.read": "get_property",
+        "property.single.write": null,
+        "property.list.read": "get_property_list",
+        "property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": "core/config/pms/octorate/pms_request_mapper/property",
+        "response_mapper_file": "core/config/pms/octorate/pms_response_mapper/property"
+      }
+    },
+    "child_property": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "child_property.single.read": null,
+        "child_property.single.write": null,
+        "child_property.list.read": null,
+        "child_property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "guest": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "guest.single.read": null,
+        "guest.single.write": null,
+        "guest.list.read": null,
+        "guest.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "room_type": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "room_type.single.read": null,
+        "room_type.single.write": null,
+        "room_type.list.read": null,
+        "room_type.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "unit": {
+      "status": true,
+      "available": {
+        "single": {
+          "read": true,
+          "write": null
+        },
+        "list": {
+          "read": true,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "unit.single.read": "get_unit",
+        "unit.single.write": null,
+        "unit.list.read": "get_unit_list",
+        "unit.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": "core/config/pms/octorate/pms_request_mapper/unit.php",
+        "response_mapper_file": "core/config/pms/octorate/pms_response_mapper/unit.php"
+      }
+    },
+    "cax_custom_requests": {
+      "status": false,
+      "manifest_path": null
+    }
+  },
+  "webhooks": {
+    "status": true,
+    "booking": {
+      "status": true,
+      "available": {
+        "new": true,
+        "update": true,
+        "cancel": true
+      },
+      "paths": {
+        "webhook_receiver_file": "main/pms_webhooks/octorate/booking-webhook"
+      }
+    },
+    "property": {
+      "status": false,
+      "available": {
+        "new": false,
+        "update": false,
+        "delete": false
+      },
+      "paths": {
+        "webhook_receiver_file": null
+      }
+    },
+    "guest": {
+      "status": false,
+      "available": {
+        "new": false,
+        "update": false,
+        "delete": false,
+        "paths": {
+          "webhook_receiver_file": null
+        }
+      }
+    }
+  }
+}

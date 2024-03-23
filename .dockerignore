@@ -1,0 +1,3 @@
+docker-compose.yaml
+bitbucket-pipelines.yml
+.env.example

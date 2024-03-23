@@ -1,0 +1,205 @@
+{
+  "integration_completed": true,
+  "enabled_for_partners": true,
+  "display_name": "Hospitable",
+  "name": "hospitable",
+  "description": "Hospitable PMS",
+  "url": "https://hospitable.com/",
+  "api_base_url": "https://api.hospitable.com/",
+  "stage_api_base_url": "https://api.hospitable.com/",
+  "api_docs": "https://developer.hospitable.com/reference/getting-started-with-your-api",
+  "endpoints_file": "core/config/pms/hospitable/pms_endpoints",
+  "mapper_helper_file": "core/system/pms/hospitable/mapper_helper",
+  "exception_file": "core/system/pms/hospitable/ExceptionCodes",
+  "user_onboard": {
+    "type": "Bearer_Token",
+    "credentials": [
+      "client_id",
+      "client_secret"
+    ],
+    "Bearer_Token": {
+      "key_name_on_cax": "access_token"
+    }
+  },
+  "requests": {
+    "status": true,
+    "booking": {
+      "status": true,
+      "available": {
+        "single": {
+          "read": true,
+          "write": false
+        },
+        "list": {
+          "read": true,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "booking.single.read": "get_booking",
+        "booking.single.write": null,
+        "booking.list.read": "get_booking_list",
+        "booking.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": "core/config/pms/hospitable/pms_request_mapper/reservation",
+        "response_mapper_file": "core/config/pms/hospitable/pms_response_mapper/reservation"
+      }
+    },
+    "property": {
+      "status": true,
+      "available": {
+        "single": {
+          "read": true,
+          "write": false
+        },
+        "list": {
+          "read": true,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "property.single.read": "get_property",
+        "property.single.write": null,
+        "property.list.read": "get_property_list",
+        "property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": "core/config/pms/hospitable/pms_request_mapper/property",
+        "response_mapper_file": "core/config/pms/hospitable/pms_response_mapper/property"
+      }
+    },
+    "child_property": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "child_property.single.read": null,
+        "child_property.single.write": null,
+        "child_property.list.read": null,
+        "child_property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "guest": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "guest.single.read": null,
+        "guest.single.write": null,
+        "guest.list.read": null,
+        "guest.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "room_type": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "room_type.single.read": null,
+        "room_type.single.write": null,
+        "room_type.list.read": null,
+        "room_type.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "unit": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "unit.single.read": null,
+        "unit.single.write": null,
+        "unit.list.read": null,
+        "unit.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "cax_custom_requests": {
+      "status": false,
+      "manifest_path": null
+    }
+  },
+  "webhooks": {
+    "status": true,
+    "booking": {
+      "status": true,
+      "available": {
+        "new": true,
+        "update": true,
+        "cancel": true
+      },
+      "paths": {
+        "webhook_receiver_file": "main/pms_webhooks/hospitable/booking-webhook"
+      }
+    },
+    "property": {
+      "status": false,
+      "available": {
+        "new": false,
+        "update": false,
+        "delete": false
+      },
+      "paths": {
+        "webhook_receiver_file": null
+      }
+    },
+    "guest": {
+      "status": false,
+      "available": {
+        "new": false,
+        "update": false,
+        "delete": false,
+        "paths": {
+          "webhook_receiver_file": null
+        }
+      }
+    }
+  }
+}

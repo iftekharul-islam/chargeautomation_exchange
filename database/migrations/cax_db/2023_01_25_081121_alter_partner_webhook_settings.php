@@ -1,0 +1,1 @@
+<?php "ALTER TABLE partner_webhook_settings  ADD INDEX `pms_name_index` (`pms_name`),  ADD INDEX `type_index` (`type`);" ?>

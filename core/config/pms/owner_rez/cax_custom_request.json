@@ -1,0 +1,48 @@
+{
+  "custom_item_definition": {
+    "status": true,
+    "available": {
+      "single": {
+        "read": true,
+        "write": true
+      },
+      "list": {
+        "read": true,
+        "write": false
+      }
+    },
+    "endpoint_keys": {
+      "custom_item_definition.single.read": "get_custom_item_definition",
+      "custom_item_definition.single.write": "add_custom_item_definition",
+      "custom_item_definition.list.read": "get_custom_item_definition_list",
+      "custom_item_definition.list.write": null
+    },
+    "paths": {
+      "request_mapper_file": "core/config/pms/owner_rez/pms_request_mapper/custom_item_definition",
+      "response_mapper_file": "core/config/pms/owner_rez/pms_response_mapper/custom_item_definition"
+    }
+  },
+  "custom_item": {
+    "status": true,
+    "available": {
+      "single": {
+        "read": true,
+        "write": true
+      },
+      "list": {
+        "read": true,
+        "write": false
+      }
+    },
+    "endpoint_keys": {
+      "custom_item.single.read": "get_custom_item",
+      "custom_item.single.write": "add_custom_item",
+      "custom_item.list.read": "get_custom_item_list",
+      "custom_item.list.write": null
+    },
+    "paths": {
+      "request_mapper_file": "core/config/pms/owner_rez/pms_request_mapper/custom_item",
+      "response_mapper_file": "core/config/pms/owner_rez/pms_response_mapper/custom_item"
+    }
+  }
+}

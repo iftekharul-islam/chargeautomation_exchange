@@ -1,0 +1,21 @@
+Options +FollowSymLinks -MultiViews -Indexes
+DirectoryIndex main/index.php
+RewriteEngine On
+
+#Redirect Trailing Slashes If Not A Folder...
+#RewriteCond %{REQUEST_URI} (.+)/$
+#RewriteRule ^ %1 [L,R=301]
+
+#If the file does not exist, and the url doesn't start with /images
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_URI} !^/images
+
+#Handle Front Controller...
+RewriteRule ^make_migration/?$ database/migrations/make_migration.php [NC,L]
+RewriteRule ^migrate/?$ database/migrations/migrate.php [NC,L]
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+#RewriteRule ^(.+)$ index.php?page=$1 [QSA,L]
+#RewriteRule ^([a-zA-Z0-9-+]+)/?$ cms.php?page=$1 [L,QSA]

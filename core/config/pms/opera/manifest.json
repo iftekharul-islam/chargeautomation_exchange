@@ -1,0 +1,202 @@
+{
+  "integration_completed": false,
+  "enabled_for_partners": false,
+  "display_name": null,
+  "name": null,
+  "description": null,
+  "url": null,
+  "api_base_url": null,
+  "stage_api_base_url": null,
+  "api_docs": null,
+  "endpoints_file": null,
+  "mapper_helper_file": null,
+  "exception_file": null,
+  "user_onboard": {
+    "type": null,
+    "credentials": [],
+    "Bearer_Token": {
+      "key_name_on_cax": null
+    }
+  },
+  "requests": {
+    "status": null,
+    "booking": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "booking.single.read": null,
+        "booking.single.write": null,
+        "booking.list.read": null,
+        "booking.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "property": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "property.single.read": null,
+        "property.single.write": null,
+        "property.list.read": null,
+        "property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "child_property": {
+      "status": false,
+      "available": {
+        "single": {
+          "read": false,
+          "write": false
+        },
+        "list": {
+          "read": false,
+          "write": false
+        }
+      },
+      "endpoint_keys": {
+        "child_property.single.read": null,
+        "child_property.single.write": null,
+        "child_property.list.read": null,
+        "child_property.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "guest": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "guest.single.read": null,
+        "guest.single.write": null,
+        "guest.list.read": null,
+        "guest.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "room_type": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "room_type.single.read": null,
+        "room_type.single.write": null,
+        "room_type.list.read": null,
+        "room_type.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "unit": {
+      "status": null,
+      "available": {
+        "single": {
+          "read": null,
+          "write": null
+        },
+        "list": {
+          "read": null,
+          "write": null
+        }
+      },
+      "endpoint_keys": {
+        "unit.single.read": null,
+        "unit.single.write": null,
+        "unit.list.read": null,
+        "unit.list.write": null
+      },
+      "paths": {
+        "request_mapper_file": null,
+        "response_mapper_file": null
+      }
+    },
+    "cax_custom_requests": {
+      "status": false,
+      "manifest_path": null
+    }
+  },
+  "webhooks": {
+    "status": null,
+    "booking": {
+      "status": null,
+      "available": {
+        "new": null,
+        "update": null,
+        "cancel": null
+      },
+      "paths": {
+        "webhook_receiver_file": null
+      }
+    },
+    "property": {
+      "status": null,
+      "available": {
+        "new": null,
+        "update": null,
+        "delete": null
+      },
+      "paths": {
+        "webhook_receiver_file": null
+      }
+    },
+    "guest": {
+      "status": null,
+      "available": {
+        "new": null,
+        "update": null,
+        "delete": null,
+        "paths": {
+          "webhook_receiver_file": null
+        }
+      }
+    }
+  }
+}

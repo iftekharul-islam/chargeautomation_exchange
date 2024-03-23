@@ -1,0 +1,135 @@
+image: atlassian/default-image:3
+
+aliases:
+  - &set-up-awscli |
+      apt-get update \
+      && apt-get install -y python3-pip \
+      && pip3 install awscli \
+      && aws configure --profile default set aws_access_key_id $AWS_ACCESS_KEY_ID \
+      && aws configure --profile default set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+
+  - &set-dev-image-version |
+      IMAGE_TAG="dev.${BITBUCKET_COMMIT::8}.${BITBUCKET_BUILD_NUMBER}"
+
+  - &set-prod-image-version |
+      DATE=$(date '+%Y-%m-%d')
+      IMAGE_TAG="release-v${DATE}.${BITBUCKET_COMMIT::8}.${BITBUCKET_BUILD_NUMBER}"
+
+  - &add-and-push-tag-for-release |
+      git tag -am "Tagging for release ${IMAGE_TAG}" ${IMAGE_TAG}
+      git push origin ${IMAGE_TAG}
+
+  - &push-image-to-aws-ecr |
+      IMAGE_NAME=$AWS_ECR_USERNAME/$AWS_ECR_REPOSITORY
+      TAGGED_IMAGE_NAME="${IMAGE_NAME}:${IMAGE_TAG}"
+      aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin  "${AWS_ECR_USERNAME}"
+      docker load --input "${AWS_ECR_REPOSITORY}.tar"
+      docker tag "${IMAGE_NAME}" "${IMAGE_NAME}:latest"
+      docker tag "${IMAGE_NAME}" "${TAGGED_IMAGE_NAME}"
+      docker image push --all-tags "${IMAGE_NAME}"
+
+  - &backup-databases-before-migration |
+      DATE=$(date '+%Y-%m-%d')
+      SNAPSHOT="releases-database-snapshot-${DATE}"
+      git diff HEAD^ HEAD --name-only >> /tmp/changedfiles
+      MIGRATIONS=$(grep "database/migrations" /tmp/changedfiles) || true
+      rm /tmp/changedfiles
+      if [[ -n "$MIGRATIONS" ]]
+      then
+        aws rds create-db-snapshot --region "${AWS_REGION}" --db-snapshot-identifier $SNAPSHOT --db-instance-identifier "${AWS_DB_INSTANCE}"
+      fi
+
+definitions:
+  steps:
+    - step: &build-docker-image
+        name: Build image
+        script:
+          - IMAGE_NAME=$AWS_ECR_USERNAME/$AWS_ECR_REPOSITORY
+          - if [[ $BITBUCKET_BRANCH == "master" ]]; then export RUN_ENV="staging"; else export RUN_ENV="prod"; fi
+          - docker build . --file Dockerfile --tag ${IMAGE_NAME}
+          - docker save ${IMAGE_NAME} --output "${AWS_ECR_REPOSITORY}.tar"
+        services:
+          - docker
+        caches:
+          - docker
+        artifacts:
+          - "*.tar"
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Build Docker image
+            script:
+              - IMAGE_NAME=$AWS_ECR_USERNAME/$AWS_ECR_REPOSITORY
+              - docker build . --file Dockerfile --tag ${IMAGE_NAME}
+
+            services:
+              - docker
+            caches:
+              - docker
+        - step:
+            name: Lint the Dockerfile
+            image: hadolint/hadolint:latest-debian
+            script:
+              - | 
+                hadolint Dockerfile --ignore DL3008 --ignore SC2046 --ignore DL4006 --ignore DL3002 --ignore DL3015 --ignore SC2211
+  branches:
+    master:
+      - step: *build-docker-image
+      - step:
+          name: Deploy to staging
+          deployment: staging
+          script:
+            - *set-up-awscli
+            - *set-dev-image-version
+            - *push-image-to-aws-ecr
+            - pipe: atlassian/trigger-pipeline:5.0.1
+              variables:
+                BITBUCKET_USERNAME: $REMOTE_K8s_RUNNER_BITBUCKET_USERNAME
+                BITBUCKET_APP_PASSWORD: $REMOTE_K8s_BITBUCKET_APP_PASSWORD
+                REPOSITORY: 'k8s-infrastructure'
+                ACCOUNT: 'teamchargeautomation'
+                REF_TYPE: 'branch'
+                REF_NAME: 'staging'
+                CUSTOM_PIPELINE_NAME: 'on-docker-build-staging'
+                PIPELINE_VARIABLES: >
+                  [{
+                    "key": "STAGING_IMAGE_TAG",
+                    "value": "$IMAGE_TAG"
+                  }]
+                WAIT: 'true'
+                DEBUG: 'true'
+          services:
+            - docker
+
+    releases:
+      - step: *build-docker-image
+      - step:
+          name: Deploy to production
+          deployment: production
+          script:
+            - *set-up-awscli
+            - *backup-databases-before-migration
+            - *set-prod-image-version
+            - *add-and-push-tag-for-release
+            - *push-image-to-aws-ecr
+            - pipe: atlassian/trigger-pipeline:5.0.1
+              variables:
+                BITBUCKET_USERNAME: $REMOTE_K8s_RUNNER_BITBUCKET_USERNAME
+                BITBUCKET_APP_PASSWORD: $REMOTE_K8s_BITBUCKET_APP_PASSWORD
+                REPOSITORY: 'k8s-infrastructure'
+                ACCOUNT: 'teamchargeautomation'
+                REF_TYPE: 'branch'
+                REF_NAME: 'master'
+                CUSTOM_PIPELINE_NAME: 'on-docker-build-production'
+                PIPELINE_VARIABLES: >
+                  [{
+                    "key": "PRODUCTION_IMAGE_TAG",
+                    "value": "$IMAGE_TAG"
+                  }]
+                WAIT: 'true'
+                DEBUG: 'true'
+          services:
+            - docker
+
